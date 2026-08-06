@@ -1,0 +1,66 @@
+{
+  "name": "sib61",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vite dev --port 3000",
+    "generate-routes": "tsr generate",
+    "build": "vite build",
+    "preview": "vite preview",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "format": "biome format",
+    "lint": "biome lint",
+    "check": "biome check"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.9.1",
+    "@prisma/client": "^7.9.1",
+    "@renpwn/fb-downloader": "^1.0.16",
+    "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/react-devtools": "latest",
+    "@tanstack/react-router": "latest",
+    "@tanstack/react-router-devtools": "latest",
+    "@tanstack/react-start": "latest",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "dotenv": "^17.4.2",
+    "nitro": "3.0.260610-beta",
+    "pg": "^8.22.0",
+    "radix-ui": "^1.6.7",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
+    "tailwind-merge": "^3.6.0",
+    "tailwindcss": "^4.1.18",
+    "youtubei.js": "^17.2.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.5",
+    "@tailwindcss/typography": "^0.5.16",
+    "@tanstack/devtools-vite": "latest",
+    "@tanstack/router-cli": "^1.132.0",
+    "@types/node": "^22.10.2",
+    "@types/pg": "^8.20.4",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^6.0.1",
+    "prisma": "^7.9.1",
+    "shadcn": "^4.16.1",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.0",
+    "vite-plugin-pwa": "^1.3.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "lightningcss"
+    ]
+  }
+}
