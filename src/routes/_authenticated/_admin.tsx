@@ -1,4 +1,10 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import {
+	createFileRoute,
+	Outlet,
+	redirect,
+	useLocation,
+} from "@tanstack/react-router";
+import { AppNav } from "@/components/wallet/app-nav";
 
 export const Route = createFileRoute("/_authenticated/_admin")({
 	beforeLoad: ({ context }) => {
@@ -6,5 +12,20 @@ export const Route = createFileRoute("/_authenticated/_admin")({
 			throw redirect({ to: "/unauthorized" });
 		}
 	},
-	component: () => <Outlet />,
+	component: AdminLayout,
 });
+
+function AdminLayout() {
+	const { auth } = Route.useRouteContext();
+	const pathname = useLocation().pathname;
+
+	return (
+		<main className="page-wrap flex flex-col gap-4 px-4 pb-24 pt-6 md:flex-row md:items-start md:gap-5 md:pb-16">
+			<AppNav auth={auth} pathname={pathname} />
+
+			<div className="min-w-0 flex-1">
+				<Outlet />
+			</div>
+		</main>
+	);
+}

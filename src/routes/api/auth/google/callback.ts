@@ -80,7 +80,7 @@ export const Route = createFileRoute("/api/auth/google/callback")({
 					oauth.redirect.startsWith("/") &&
 					!oauth.redirect.startsWith("//")
 						? oauth.redirect
-						: "/apps/wallet";
+						: "/dashboard";
 
 				return redir(target);
 			},

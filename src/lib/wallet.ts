@@ -71,6 +71,46 @@ export type TransactionDTO = {
 	createdAt: string;
 };
 
+export type TransactionPage = {
+	items: TransactionDTO[];
+	total: number;
+	page: number;
+	pageSize: number;
+	totalPages: number;
+};
+
+export type CategoryDTO = {
+	id: string;
+	name: string;
+	type: TransactionType;
+	sortOrder: number;
+	createdAt: string;
+};
+
+function transactionWhere(
+	userId: string,
+	filters?: { accountId?: string; type?: TransactionType },
+) {
+	return {
+		AND: [
+			{
+				OR: [{ account: { userId } }, { toAccount: { userId } }],
+			},
+			...(filters?.accountId
+				? [
+						{
+							OR: [
+								{ accountId: filters.accountId },
+								{ toAccountId: filters.accountId },
+							],
+						},
+					]
+				: []),
+			...(filters?.type ? [{ type: filters.type }] : []),
+		],
+	};
+}
+
 function toAccountDTO(account: {
 	id: string;
 	name: string;
@@ -152,15 +192,7 @@ export const listAccountTransactionsFn = createServerFn({ method: "GET" })
 	.validator((input: { accountId: string }) => input)
 	.handler(async ({ data, context }) => {
 		const transactions = await prisma.transaction.findMany({
-			where: {
-				OR: [
-					{ accountId: data.accountId, account: { userId: context.user.id } },
-					{
-						toAccountId: data.accountId,
-						toAccount: { userId: context.user.id },
-					},
-				],
-			},
+			where: transactionWhere(context.user.id, { accountId: data.accountId }),
 			orderBy: [{ date: "desc" }, { createdAt: "desc" }],
 			include: {
 				account: { select: { name: true } },
@@ -348,14 +380,10 @@ export const createTransactionFn = createServerFn({ method: "POST" })
 		const category = data.category?.trim();
 		if (!category) throw new Error("Please select a category.");
 
-		const categoryName =
-			data.type === TransactionType.INCOME
-				? INCOME_CATEGORIES.includes(category)
-					? category
-					: "Other"
-				: EXPENSE_CATEGORIES.includes(category)
-					? category
-					: "Other";
+		const categoryRow = await prisma.category.findFirst({
+			where: { userId: context.user.id, type: data.type, name: category },
+		});
+		if (!categoryRow) throw new Error("Please select a valid category.");
 
 		const delta = data.type === TransactionType.INCOME ? amount : -amount;
 
@@ -368,7 +396,7 @@ export const createTransactionFn = createServerFn({ method: "POST" })
 				data: {
 					type: data.type,
 					amount,
-					category: categoryName,
+					category: categoryRow.name,
 					note: data.note?.trim() || null,
 					date: data.date ? new Date(data.date) : new Date(),
 					accountId: account.id,
@@ -396,12 +424,7 @@ export const listTransactionsFn = createServerFn({ method: "GET" })
 	.middleware([requireUserMiddleware])
 	.handler(async ({ context }) => {
 		const transactions = await prisma.transaction.findMany({
-			where: {
-				OR: [
-					{ account: { userId: context.user.id } },
-					{ toAccount: { userId: context.user.id } },
-				],
-			},
+			where: transactionWhere(context.user.id),
 			orderBy: [{ date: "desc" }, { createdAt: "desc" }],
 			include: {
 				account: { select: { name: true } },
@@ -423,6 +446,64 @@ export const listTransactionsFn = createServerFn({ method: "GET" })
 				createdAt: t.createdAt,
 			}),
 		);
+	});
+
+export const listTransactionsPageFn = createServerFn({ method: "GET" })
+	.middleware([requireUserMiddleware])
+	.validator(
+		(input: {
+			page?: number;
+			pageSize?: number;
+			accountId?: string;
+			type?: TransactionType;
+		}) => input,
+	)
+	.handler(async ({ data, context }) => {
+		const pageSize = Math.min(
+			100,
+			Math.max(1, Math.floor(data.pageSize ?? 25)),
+		);
+		const page = Math.max(1, Math.floor(data.page ?? 1));
+
+		const where = transactionWhere(context.user.id, {
+			accountId: data.accountId,
+			type: data.type,
+		});
+		const [transactions, total] = await prisma.$transaction([
+			prisma.transaction.findMany({
+				where,
+				orderBy: [{ date: "desc" }, { createdAt: "desc" }],
+				include: {
+					account: { select: { name: true } },
+					toAccount: { select: { name: true } },
+				},
+				skip: (page - 1) * pageSize,
+				take: pageSize,
+			}),
+			prisma.transaction.count({ where }),
+		]);
+
+		return {
+			items: transactions.map((t) =>
+				toTransactionDTO({
+					id: t.id,
+					type: t.type,
+					amount: t.amount,
+					category: t.category,
+					note: t.note,
+					date: t.date,
+					accountId: t.accountId,
+					accountName: t.account?.name ?? null,
+					toAccountId: t.toAccountId,
+					toAccountName: t.toAccount?.name ?? null,
+					createdAt: t.createdAt,
+				}),
+			),
+			total,
+			page,
+			pageSize,
+			totalPages: Math.max(1, Math.ceil(total / pageSize)),
+		} satisfies TransactionPage;
 	});
 
 export const deleteTransactionFn = createServerFn({ method: "POST" })
@@ -489,5 +570,132 @@ export const deleteTransactionFn = createServerFn({ method: "POST" })
 			await tx.transaction.delete({ where: { id: data.id } });
 		});
 
+		return { deleted: data.id };
+	});
+
+function toCategoryDTO(category: {
+	id: string;
+	name: string;
+	type: TransactionType;
+	sortOrder: number;
+	createdAt: Date;
+}): CategoryDTO {
+	return {
+		id: category.id,
+		name: category.name,
+		type: category.type,
+		sortOrder: category.sortOrder,
+		createdAt: category.createdAt.toISOString(),
+	};
+}
+
+async function ensureDefaultCategories(userId: string) {
+	const count = await prisma.category.count({ where: { userId } });
+	if (count > 0) return;
+
+	const defaults = [
+		...EXPENSE_CATEGORIES.map((name, index) => ({
+			userId,
+			name,
+			type: TransactionType.EXPENSE,
+			sortOrder: index,
+		})),
+		...INCOME_CATEGORIES.map((name, index) => ({
+			userId,
+			name,
+			type: TransactionType.INCOME,
+			sortOrder: index,
+		})),
+	];
+	await prisma.category.createMany({ data: defaults });
+}
+
+export const listCategoriesFn = createServerFn({ method: "GET" })
+	.middleware([requireUserMiddleware])
+	.handler(async ({ context }) => {
+		await ensureDefaultCategories(context.user.id);
+		const categories = await prisma.category.findMany({
+			where: { userId: context.user.id },
+			orderBy: [{ type: "asc" }, { sortOrder: "asc" }, { name: "asc" }],
+		});
+		return categories.map(toCategoryDTO);
+	});
+
+export const createCategoryFn = createServerFn({ method: "POST" })
+	.middleware([requireUserMiddleware])
+	.validator(
+		(input: { name: string; type: TransactionType; sortOrder?: number }) =>
+			input,
+	)
+	.handler(async ({ data, context }) => {
+		const name = data.name.trim();
+		if (!name) throw new Error("Category name is required.");
+		if (name.length > 40) throw new Error("Category name is too long.");
+		if (data.type === TransactionType.TRANSFER) {
+			throw new Error("Transfer is not a custom category.");
+		}
+
+		const existing = await prisma.category.findFirst({
+			where: {
+				userId: context.user.id,
+				name,
+				type: data.type,
+			},
+		});
+		if (existing) throw new Error("A category with that name already exists.");
+
+		const max = await prisma.category.aggregate({
+			where: { userId: context.user.id, type: data.type },
+			_max: { sortOrder: true },
+		});
+		const category = await prisma.category.create({
+			data: {
+				userId: context.user.id,
+				name,
+				type: data.type,
+				sortOrder: data.sortOrder ?? (max._max.sortOrder ?? -1) + 1,
+			},
+		});
+		return toCategoryDTO(category);
+	});
+
+export const updateCategoryFn = createServerFn({ method: "POST" })
+	.middleware([requireUserMiddleware])
+	.validator((input: { id: string; name: string }) => input)
+	.handler(async ({ data, context }) => {
+		const category = await prisma.category.findFirst({
+			where: { id: data.id, userId: context.user.id },
+		});
+		if (!category) throw new Error("Category not found.");
+
+		const name = data.name.trim();
+		if (!name) throw new Error("Category name is required.");
+		if (name.length > 40) throw new Error("Category name is too long.");
+
+		const duplicate = await prisma.category.findFirst({
+			where: {
+				userId: context.user.id,
+				name,
+				type: category.type,
+				id: { not: category.id },
+			},
+		});
+		if (duplicate) throw new Error("A category with that name already exists.");
+
+		const updated = await prisma.category.update({
+			where: { id: category.id },
+			data: { name },
+		});
+		return toCategoryDTO(updated);
+	});
+
+export const deleteCategoryFn = createServerFn({ method: "POST" })
+	.middleware([requireUserMiddleware])
+	.validator((input: { id: string }) => input)
+	.handler(async ({ data, context }) => {
+		const deleted = await prisma.category.deleteMany({
+			where: { id: data.id, userId: context.user.id },
+		});
+		if (deleted.count === 0) throw new Error("Category not found.");
 		return { deleted: data.id };
 	});

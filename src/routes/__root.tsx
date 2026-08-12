@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
-import { ThemeSwitcher } from "@/components/theme-switcher";
+import { GlobalTopbar } from "@/components/topbar";
 import { type AuthState, getCurrentUserFn, toAuthState } from "@/lib/auth";
 
 import appCss from "../styles.css?url";
@@ -24,7 +24,7 @@ export const Route = createRootRouteWithContext<{ auth: AuthState }>()({
 				content: "width=device-width, initial-scale=1",
 			},
 			{
-				title: "TanStack Start Starter",
+				title: "Ledgerly",
 			},
 			{
 				name: "theme-color",
@@ -40,7 +40,7 @@ export const Route = createRootRouteWithContext<{ auth: AuthState }>()({
 			},
 			{
 				name: "apple-mobile-web-app-title",
-				content: "SIB61",
+				content: "Ledgerly",
 			},
 		],
 		links: [
@@ -82,8 +82,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 						__html: `if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'}).catch(function(){})})}`,
 					}}
 				/>
+				<GlobalTopbar />
 				{children}
-				<ThemeSwitcher className="fixed bottom-5 left-5 z-[99999]" />
 				<TanStackDevtools
 					config={{
 						position: "bottom-right",

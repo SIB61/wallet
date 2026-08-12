@@ -1,4 +1,5 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { LogoMark } from "@/components/logo";
 
 function sanitizeRedirect(value: unknown): string {
 	if (
@@ -6,7 +7,7 @@ function sanitizeRedirect(value: unknown): string {
 		!value.startsWith("/") ||
 		value.startsWith("//")
 	) {
-		return "/";
+		return "/dashboard";
 	}
 	return value;
 }
@@ -21,12 +22,12 @@ export const Route = createFileRoute("/login")({
 	}),
 	beforeLoad: ({ context, search }) => {
 		if (context.auth.isAuthenticated) {
-			throw redirect({ to: search.redirect ?? "/" });
+			throw redirect({ to: search.redirect ?? "/dashboard" });
 		}
 	},
 	component: Login,
 	head: () => ({
-		meta: [{ title: "Sign in · SIB61" }],
+		meta: [{ title: "Sign in · Ledgerly" }],
 	}),
 });
 
@@ -58,17 +59,17 @@ function Login() {
 
 	return (
 		<main className="page-wrap flex min-h-[70vh] items-center justify-center px-4 py-16">
-			<section className="island-shell w-full max-w-md rounded-3xl p-8 sm:p-10">
+			<section className="island-shell w-full max-w-md rounded-xl p-8 sm:p-10">
 				<div className="mb-8 text-center">
-					<span className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--lagoon-deep)] text-2xl font-extrabold text-[var(--sand)]">
-						SIB61
+					<span className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-xl border border-[var(--lagoon-deep-30)] bg-[var(--lagoon-12)] text-[var(--lagoon-deep)]">
+						<LogoMark className="h-9 w-9" />
 					</span>
-					<p className="island-kicker mb-2 text-xs">Private workspace</p>
+					<p className="island-kicker mb-2 text-xs">Ledgerly</p>
 					<h1 className="display-title text-2xl font-bold text-[var(--sea-ink)]">
-						Sign in to continue
+						Sign in to your wallet
 					</h1>
 					<p className="m-0 mt-2 text-sm leading-6 text-[var(--sea-ink-soft)]">
-						Access your wallet and admin tools with your Google account.
+						Track accounts, transactions and balances with your Google account.
 					</p>
 				</div>
 
@@ -82,17 +83,17 @@ function Login() {
 				)}
 
 				<a
-					href={`/api/auth/google/start?redirect=${encodeURIComponent(search.redirect ?? "/")}`}
-					className="flex w-full items-center justify-center gap-3 rounded-2xl border border-[var(--line)] bg-[var(--surface-strong)] px-5 py-3.5 text-sm font-semibold text-[var(--sea-ink)] shadow-[0_10px_20px_var(--shadow-ink-8)] transition hover:-translate-y-0.5 hover:border-[var(--lagoon-deep)]"
+					href={`/api/auth/google/start?redirect=${encodeURIComponent(search.redirect ?? "/dashboard")}`}
+					className="flex w-full items-center justify-center gap-3 rounded-xl border border-[var(--line)] bg-[var(--surface-strong)] px-5 py-3.5 text-sm font-semibold text-[var(--sea-ink)] transition hover:border-[var(--lagoon-deep)] hover:text-[var(--lagoon-deep)]"
 				>
 					<GoogleIcon />
 					Sign in with Google
 				</a>
 
 				<p className="m-0 mt-6 text-center text-xs leading-5 text-[var(--sea-ink-soft)]">
-					Only authorized accounts can access protected areas. Need access?{" "}
+					Only authorized accounts can access this wallet. Need access?{" "}
 					<Link
-						to="/about"
+						to="/"
 						className="font-semibold text-[var(--lagoon-deep)] no-underline hover:underline"
 					>
 						Contact the owner

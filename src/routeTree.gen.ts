@@ -11,32 +11,18 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as PortfolioRouteImport } from './routes/portfolio'
-import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as UnauthorizedRouteImport } from './routes/unauthorized'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/_admin'
-import { Route as ApiYoutubeDownloadRouteImport } from './routes/api/youtube-download'
-import { Route as PortfolioIndexRouteImport } from './routes/portfolio/index'
-import { Route as PortfolioBlogRouteImport } from './routes/portfolio/blog'
-import { Route as PortfolioContactRouteImport } from './routes/portfolio/contact'
-import { Route as PortfolioExperienceRouteImport } from './routes/portfolio/experience'
-import { Route as PortfolioProjectsRouteImport } from './routes/portfolio/projects'
-import { Route as ToolsIndexRouteImport } from './routes/tools/index'
-import { Route as ToolsFacebookVideoDownloaderRouteImport } from './routes/tools/facebook-video-downloader'
-import { Route as ToolsImageResizerRouteImport } from './routes/tools/image-resizer'
-import { Route as ToolsMarkdownPdfBuilderRouteImport } from './routes/tools/markdown-pdf-builder'
-import { Route as ToolsYoutubeVideoDownloaderRouteImport } from './routes/tools/youtube-video-downloader'
+import { Route as AuthenticatedWalletRouteImport } from './routes/_authenticated/_wallet'
 import { Route as AuthenticatedAdminAdminRouteImport } from './routes/_authenticated/_admin/admin'
-import { Route as AuthenticatedAppsWalletRouteImport } from './routes/_authenticated/apps/wallet'
-import { Route as AuthenticatedAppsWalletIndexRouteImport } from './routes/_authenticated/apps/wallet/index'
-import { Route as AuthenticatedAppsWalletAccountsRouteImport } from './routes/_authenticated/apps/wallet/accounts'
-import { Route as AuthenticatedAppsWalletTransactionsRouteImport } from './routes/_authenticated/apps/wallet/transactions'
+import { Route as AuthenticatedWalletAccountsRouteImport } from './routes/_authenticated/_wallet/accounts'
+import { Route as AuthenticatedWalletDashboardRouteImport } from './routes/_authenticated/_wallet/dashboard'
+import { Route as AuthenticatedWalletTransactionsRouteImport } from './routes/_authenticated/_wallet/transactions'
+import { Route as AuthenticatedWalletAccountsIndexRouteImport } from './routes/_authenticated/_wallet/accounts/index'
+import { Route as AuthenticatedWalletAccountsAccountIdRouteImport } from './routes/_authenticated/_wallet/accounts/$accountId'
 import { Route as ApiAuthGoogleCallbackRouteImport } from './routes/api/auth/google/callback'
 import { Route as ApiAuthGoogleStartRouteImport } from './routes/api/auth/google/start'
-import { Route as AuthenticatedAppsWalletAccountsIndexRouteImport } from './routes/_authenticated/apps/wallet/accounts/index'
-import { Route as AuthenticatedAppsWalletAccountsAccountIdRouteImport } from './routes/_authenticated/apps/wallet/accounts/$accountId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -47,24 +33,9 @@ const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PortfolioRoute = PortfolioRouteImport.update({
-  id: '/portfolio',
-  path: '/portfolio',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ToolsRoute = ToolsRouteImport.update({
-  id: '/tools',
-  path: '/tools',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UnauthorizedRoute = UnauthorizedRouteImport.update({
@@ -76,90 +47,44 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/_admin',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const ApiYoutubeDownloadRoute = ApiYoutubeDownloadRouteImport.update({
-  id: '/api/youtube-download',
-  path: '/api/youtube-download',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedWalletRoute = AuthenticatedWalletRouteImport.update({
+  id: '/_wallet',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
-const PortfolioIndexRoute = PortfolioIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => PortfolioRoute,
-} as any)
-const PortfolioBlogRoute = PortfolioBlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
-  getParentRoute: () => PortfolioRoute,
-} as any)
-const PortfolioContactRoute = PortfolioContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => PortfolioRoute,
-} as any)
-const PortfolioExperienceRoute = PortfolioExperienceRouteImport.update({
-  id: '/experience',
-  path: '/experience',
-  getParentRoute: () => PortfolioRoute,
-} as any)
-const PortfolioProjectsRoute = PortfolioProjectsRouteImport.update({
-  id: '/projects',
-  path: '/projects',
-  getParentRoute: () => PortfolioRoute,
-} as any)
-const ToolsIndexRoute = ToolsIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => ToolsRoute,
-} as any)
-const ToolsFacebookVideoDownloaderRoute =
-  ToolsFacebookVideoDownloaderRouteImport.update({
-    id: '/facebook-video-downloader',
-    path: '/facebook-video-downloader',
-    getParentRoute: () => ToolsRoute,
-  } as any)
-const ToolsImageResizerRoute = ToolsImageResizerRouteImport.update({
-  id: '/image-resizer',
-  path: '/image-resizer',
-  getParentRoute: () => ToolsRoute,
-} as any)
-const ToolsMarkdownPdfBuilderRoute = ToolsMarkdownPdfBuilderRouteImport.update({
-  id: '/markdown-pdf-builder',
-  path: '/markdown-pdf-builder',
-  getParentRoute: () => ToolsRoute,
-} as any)
-const ToolsYoutubeVideoDownloaderRoute =
-  ToolsYoutubeVideoDownloaderRouteImport.update({
-    id: '/youtube-video-downloader',
-    path: '/youtube-video-downloader',
-    getParentRoute: () => ToolsRoute,
-  } as any)
 const AuthenticatedAdminAdminRoute = AuthenticatedAdminAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
-const AuthenticatedAppsWalletRoute = AuthenticatedAppsWalletRouteImport.update({
-  id: '/apps/wallet',
-  path: '/apps/wallet',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedAppsWalletIndexRoute =
-  AuthenticatedAppsWalletIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedAppsWalletRoute,
-  } as any)
-const AuthenticatedAppsWalletAccountsRoute =
-  AuthenticatedAppsWalletAccountsRouteImport.update({
+const AuthenticatedWalletAccountsRoute =
+  AuthenticatedWalletAccountsRouteImport.update({
     id: '/accounts',
     path: '/accounts',
-    getParentRoute: () => AuthenticatedAppsWalletRoute,
+    getParentRoute: () => AuthenticatedWalletRoute,
   } as any)
-const AuthenticatedAppsWalletTransactionsRoute =
-  AuthenticatedAppsWalletTransactionsRouteImport.update({
+const AuthenticatedWalletDashboardRoute =
+  AuthenticatedWalletDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedWalletRoute,
+  } as any)
+const AuthenticatedWalletTransactionsRoute =
+  AuthenticatedWalletTransactionsRouteImport.update({
     id: '/transactions',
     path: '/transactions',
-    getParentRoute: () => AuthenticatedAppsWalletRoute,
+    getParentRoute: () => AuthenticatedWalletRoute,
+  } as any)
+const AuthenticatedWalletAccountsIndexRoute =
+  AuthenticatedWalletAccountsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedWalletAccountsRoute,
+  } as any)
+const AuthenticatedWalletAccountsAccountIdRoute =
+  AuthenticatedWalletAccountsAccountIdRouteImport.update({
+    id: '/$accountId',
+    path: '/$accountId',
+    getParentRoute: () => AuthenticatedWalletAccountsRoute,
   } as any)
 const ApiAuthGoogleCallbackRoute = ApiAuthGoogleCallbackRouteImport.update({
   id: '/api/auth/google/callback',
@@ -171,196 +96,98 @@ const ApiAuthGoogleStartRoute = ApiAuthGoogleStartRouteImport.update({
   path: '/api/auth/google/start',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedAppsWalletAccountsIndexRoute =
-  AuthenticatedAppsWalletAccountsIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedAppsWalletAccountsRoute,
-  } as any)
-const AuthenticatedAppsWalletAccountsAccountIdRoute =
-  AuthenticatedAppsWalletAccountsAccountIdRouteImport.update({
-    id: '/$accountId',
-    path: '/$accountId',
-    getParentRoute: () => AuthenticatedAppsWalletAccountsRoute,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/login': typeof LoginRoute
-  '/portfolio': typeof PortfolioRouteWithChildren
-  '/tools': typeof ToolsRouteWithChildren
   '/unauthorized': typeof UnauthorizedRoute
-  '/api/youtube-download': typeof ApiYoutubeDownloadRoute
-  '/portfolio/blog': typeof PortfolioBlogRoute
-  '/portfolio/contact': typeof PortfolioContactRoute
-  '/portfolio/experience': typeof PortfolioExperienceRoute
-  '/portfolio/projects': typeof PortfolioProjectsRoute
-  '/tools/facebook-video-downloader': typeof ToolsFacebookVideoDownloaderRoute
-  '/tools/image-resizer': typeof ToolsImageResizerRoute
-  '/tools/markdown-pdf-builder': typeof ToolsMarkdownPdfBuilderRoute
-  '/tools/youtube-video-downloader': typeof ToolsYoutubeVideoDownloaderRoute
-  '/portfolio/': typeof PortfolioIndexRoute
-  '/tools/': typeof ToolsIndexRoute
   '/admin': typeof AuthenticatedAdminAdminRoute
-  '/apps/wallet': typeof AuthenticatedAppsWalletRouteWithChildren
-  '/apps/wallet/accounts': typeof AuthenticatedAppsWalletAccountsRouteWithChildren
-  '/apps/wallet/transactions': typeof AuthenticatedAppsWalletTransactionsRoute
+  '/accounts': typeof AuthenticatedWalletAccountsRouteWithChildren
+  '/dashboard': typeof AuthenticatedWalletDashboardRoute
+  '/transactions': typeof AuthenticatedWalletTransactionsRoute
+  '/accounts/$accountId': typeof AuthenticatedWalletAccountsAccountIdRoute
   '/api/auth/google/callback': typeof ApiAuthGoogleCallbackRoute
   '/api/auth/google/start': typeof ApiAuthGoogleStartRoute
-  '/apps/wallet/': typeof AuthenticatedAppsWalletIndexRoute
-  '/apps/wallet/accounts/$accountId': typeof AuthenticatedAppsWalletAccountsAccountIdRoute
-  '/apps/wallet/accounts/': typeof AuthenticatedAppsWalletAccountsIndexRoute
+  '/accounts/': typeof AuthenticatedWalletAccountsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/unauthorized': typeof UnauthorizedRoute
-  '/api/youtube-download': typeof ApiYoutubeDownloadRoute
-  '/portfolio/blog': typeof PortfolioBlogRoute
-  '/portfolio/contact': typeof PortfolioContactRoute
-  '/portfolio/experience': typeof PortfolioExperienceRoute
-  '/portfolio/projects': typeof PortfolioProjectsRoute
-  '/tools/facebook-video-downloader': typeof ToolsFacebookVideoDownloaderRoute
-  '/tools/image-resizer': typeof ToolsImageResizerRoute
-  '/tools/markdown-pdf-builder': typeof ToolsMarkdownPdfBuilderRoute
-  '/tools/youtube-video-downloader': typeof ToolsYoutubeVideoDownloaderRoute
-  '/portfolio': typeof PortfolioIndexRoute
-  '/tools': typeof ToolsIndexRoute
   '/admin': typeof AuthenticatedAdminAdminRoute
-  '/apps/wallet/transactions': typeof AuthenticatedAppsWalletTransactionsRoute
+  '/dashboard': typeof AuthenticatedWalletDashboardRoute
+  '/transactions': typeof AuthenticatedWalletTransactionsRoute
+  '/accounts/$accountId': typeof AuthenticatedWalletAccountsAccountIdRoute
   '/api/auth/google/callback': typeof ApiAuthGoogleCallbackRoute
   '/api/auth/google/start': typeof ApiAuthGoogleStartRoute
-  '/apps/wallet': typeof AuthenticatedAppsWalletIndexRoute
-  '/apps/wallet/accounts/$accountId': typeof AuthenticatedAppsWalletAccountsAccountIdRoute
-  '/apps/wallet/accounts': typeof AuthenticatedAppsWalletAccountsIndexRoute
+  '/accounts': typeof AuthenticatedWalletAccountsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
-  '/about': typeof AboutRoute
   '/login': typeof LoginRoute
-  '/portfolio': typeof PortfolioRouteWithChildren
-  '/tools': typeof ToolsRouteWithChildren
   '/unauthorized': typeof UnauthorizedRoute
   '/_authenticated/_admin': typeof AuthenticatedAdminRouteWithChildren
-  '/api/youtube-download': typeof ApiYoutubeDownloadRoute
-  '/portfolio/blog': typeof PortfolioBlogRoute
-  '/portfolio/contact': typeof PortfolioContactRoute
-  '/portfolio/experience': typeof PortfolioExperienceRoute
-  '/portfolio/projects': typeof PortfolioProjectsRoute
-  '/tools/facebook-video-downloader': typeof ToolsFacebookVideoDownloaderRoute
-  '/tools/image-resizer': typeof ToolsImageResizerRoute
-  '/tools/markdown-pdf-builder': typeof ToolsMarkdownPdfBuilderRoute
-  '/tools/youtube-video-downloader': typeof ToolsYoutubeVideoDownloaderRoute
-  '/portfolio/': typeof PortfolioIndexRoute
-  '/tools/': typeof ToolsIndexRoute
+  '/_authenticated/_wallet': typeof AuthenticatedWalletRouteWithChildren
   '/_authenticated/_admin/admin': typeof AuthenticatedAdminAdminRoute
-  '/_authenticated/apps/wallet': typeof AuthenticatedAppsWalletRouteWithChildren
-  '/_authenticated/apps/wallet/accounts': typeof AuthenticatedAppsWalletAccountsRouteWithChildren
-  '/_authenticated/apps/wallet/transactions': typeof AuthenticatedAppsWalletTransactionsRoute
+  '/_authenticated/_wallet/accounts': typeof AuthenticatedWalletAccountsRouteWithChildren
+  '/_authenticated/_wallet/dashboard': typeof AuthenticatedWalletDashboardRoute
+  '/_authenticated/_wallet/transactions': typeof AuthenticatedWalletTransactionsRoute
+  '/_authenticated/_wallet/accounts/$accountId': typeof AuthenticatedWalletAccountsAccountIdRoute
   '/api/auth/google/callback': typeof ApiAuthGoogleCallbackRoute
   '/api/auth/google/start': typeof ApiAuthGoogleStartRoute
-  '/_authenticated/apps/wallet/': typeof AuthenticatedAppsWalletIndexRoute
-  '/_authenticated/apps/wallet/accounts/$accountId': typeof AuthenticatedAppsWalletAccountsAccountIdRoute
-  '/_authenticated/apps/wallet/accounts/': typeof AuthenticatedAppsWalletAccountsIndexRoute
+  '/_authenticated/_wallet/accounts/': typeof AuthenticatedWalletAccountsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
     | '/login'
-    | '/portfolio'
-    | '/tools'
     | '/unauthorized'
-    | '/api/youtube-download'
-    | '/portfolio/blog'
-    | '/portfolio/contact'
-    | '/portfolio/experience'
-    | '/portfolio/projects'
-    | '/tools/facebook-video-downloader'
-    | '/tools/image-resizer'
-    | '/tools/markdown-pdf-builder'
-    | '/tools/youtube-video-downloader'
-    | '/portfolio/'
-    | '/tools/'
     | '/admin'
-    | '/apps/wallet'
-    | '/apps/wallet/accounts'
-    | '/apps/wallet/transactions'
+    | '/accounts'
+    | '/dashboard'
+    | '/transactions'
+    | '/accounts/$accountId'
     | '/api/auth/google/callback'
     | '/api/auth/google/start'
-    | '/apps/wallet/'
-    | '/apps/wallet/accounts/$accountId'
-    | '/apps/wallet/accounts/'
+    | '/accounts/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
     | '/login'
     | '/unauthorized'
-    | '/api/youtube-download'
-    | '/portfolio/blog'
-    | '/portfolio/contact'
-    | '/portfolio/experience'
-    | '/portfolio/projects'
-    | '/tools/facebook-video-downloader'
-    | '/tools/image-resizer'
-    | '/tools/markdown-pdf-builder'
-    | '/tools/youtube-video-downloader'
-    | '/portfolio'
-    | '/tools'
     | '/admin'
-    | '/apps/wallet/transactions'
+    | '/dashboard'
+    | '/transactions'
+    | '/accounts/$accountId'
     | '/api/auth/google/callback'
     | '/api/auth/google/start'
-    | '/apps/wallet'
-    | '/apps/wallet/accounts/$accountId'
-    | '/apps/wallet/accounts'
+    | '/accounts'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
-    | '/about'
     | '/login'
-    | '/portfolio'
-    | '/tools'
     | '/unauthorized'
     | '/_authenticated/_admin'
-    | '/api/youtube-download'
-    | '/portfolio/blog'
-    | '/portfolio/contact'
-    | '/portfolio/experience'
-    | '/portfolio/projects'
-    | '/tools/facebook-video-downloader'
-    | '/tools/image-resizer'
-    | '/tools/markdown-pdf-builder'
-    | '/tools/youtube-video-downloader'
-    | '/portfolio/'
-    | '/tools/'
+    | '/_authenticated/_wallet'
     | '/_authenticated/_admin/admin'
-    | '/_authenticated/apps/wallet'
-    | '/_authenticated/apps/wallet/accounts'
-    | '/_authenticated/apps/wallet/transactions'
+    | '/_authenticated/_wallet/accounts'
+    | '/_authenticated/_wallet/dashboard'
+    | '/_authenticated/_wallet/transactions'
+    | '/_authenticated/_wallet/accounts/$accountId'
     | '/api/auth/google/callback'
     | '/api/auth/google/start'
-    | '/_authenticated/apps/wallet/'
-    | '/_authenticated/apps/wallet/accounts/$accountId'
-    | '/_authenticated/apps/wallet/accounts/'
+    | '/_authenticated/_wallet/accounts/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
-  AboutRoute: typeof AboutRoute
   LoginRoute: typeof LoginRoute
-  PortfolioRoute: typeof PortfolioRouteWithChildren
-  ToolsRoute: typeof ToolsRouteWithChildren
   UnauthorizedRoute: typeof UnauthorizedRoute
-  ApiYoutubeDownloadRoute: typeof ApiYoutubeDownloadRoute
   ApiAuthGoogleCallbackRoute: typeof ApiAuthGoogleCallbackRoute
   ApiAuthGoogleStartRoute: typeof ApiAuthGoogleStartRoute
 }
@@ -381,32 +208,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/portfolio': {
-      id: '/portfolio'
-      path: '/portfolio'
-      fullPath: '/portfolio'
-      preLoaderRoute: typeof PortfolioRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tools': {
-      id: '/tools'
-      path: '/tools'
-      fullPath: '/tools'
-      preLoaderRoute: typeof ToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/unauthorized': {
@@ -423,82 +229,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/api/youtube-download': {
-      id: '/api/youtube-download'
-      path: '/api/youtube-download'
-      fullPath: '/api/youtube-download'
-      preLoaderRoute: typeof ApiYoutubeDownloadRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/portfolio/': {
-      id: '/portfolio/'
-      path: '/'
-      fullPath: '/portfolio/'
-      preLoaderRoute: typeof PortfolioIndexRouteImport
-      parentRoute: typeof PortfolioRoute
-    }
-    '/portfolio/blog': {
-      id: '/portfolio/blog'
-      path: '/blog'
-      fullPath: '/portfolio/blog'
-      preLoaderRoute: typeof PortfolioBlogRouteImport
-      parentRoute: typeof PortfolioRoute
-    }
-    '/portfolio/contact': {
-      id: '/portfolio/contact'
-      path: '/contact'
-      fullPath: '/portfolio/contact'
-      preLoaderRoute: typeof PortfolioContactRouteImport
-      parentRoute: typeof PortfolioRoute
-    }
-    '/portfolio/experience': {
-      id: '/portfolio/experience'
-      path: '/experience'
-      fullPath: '/portfolio/experience'
-      preLoaderRoute: typeof PortfolioExperienceRouteImport
-      parentRoute: typeof PortfolioRoute
-    }
-    '/portfolio/projects': {
-      id: '/portfolio/projects'
-      path: '/projects'
-      fullPath: '/portfolio/projects'
-      preLoaderRoute: typeof PortfolioProjectsRouteImport
-      parentRoute: typeof PortfolioRoute
-    }
-    '/tools/': {
-      id: '/tools/'
-      path: '/'
-      fullPath: '/tools/'
-      preLoaderRoute: typeof ToolsIndexRouteImport
-      parentRoute: typeof ToolsRoute
-    }
-    '/tools/facebook-video-downloader': {
-      id: '/tools/facebook-video-downloader'
-      path: '/facebook-video-downloader'
-      fullPath: '/tools/facebook-video-downloader'
-      preLoaderRoute: typeof ToolsFacebookVideoDownloaderRouteImport
-      parentRoute: typeof ToolsRoute
-    }
-    '/tools/image-resizer': {
-      id: '/tools/image-resizer'
-      path: '/image-resizer'
-      fullPath: '/tools/image-resizer'
-      preLoaderRoute: typeof ToolsImageResizerRouteImport
-      parentRoute: typeof ToolsRoute
-    }
-    '/tools/markdown-pdf-builder': {
-      id: '/tools/markdown-pdf-builder'
-      path: '/markdown-pdf-builder'
-      fullPath: '/tools/markdown-pdf-builder'
-      preLoaderRoute: typeof ToolsMarkdownPdfBuilderRouteImport
-      parentRoute: typeof ToolsRoute
-    }
-    '/tools/youtube-video-downloader': {
-      id: '/tools/youtube-video-downloader'
-      path: '/youtube-video-downloader'
-      fullPath: '/tools/youtube-video-downloader'
-      preLoaderRoute: typeof ToolsYoutubeVideoDownloaderRouteImport
-      parentRoute: typeof ToolsRoute
+    '/_authenticated/_wallet': {
+      id: '/_authenticated/_wallet'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedWalletRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/_admin/admin': {
       id: '/_authenticated/_admin/admin'
@@ -507,33 +243,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAdminRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
-    '/_authenticated/apps/wallet': {
-      id: '/_authenticated/apps/wallet'
-      path: '/apps/wallet'
-      fullPath: '/apps/wallet'
-      preLoaderRoute: typeof AuthenticatedAppsWalletRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/apps/wallet/': {
-      id: '/_authenticated/apps/wallet/'
-      path: '/'
-      fullPath: '/apps/wallet/'
-      preLoaderRoute: typeof AuthenticatedAppsWalletIndexRouteImport
-      parentRoute: typeof AuthenticatedAppsWalletRoute
-    }
-    '/_authenticated/apps/wallet/accounts': {
-      id: '/_authenticated/apps/wallet/accounts'
+    '/_authenticated/_wallet/accounts': {
+      id: '/_authenticated/_wallet/accounts'
       path: '/accounts'
-      fullPath: '/apps/wallet/accounts'
-      preLoaderRoute: typeof AuthenticatedAppsWalletAccountsRouteImport
-      parentRoute: typeof AuthenticatedAppsWalletRoute
+      fullPath: '/accounts'
+      preLoaderRoute: typeof AuthenticatedWalletAccountsRouteImport
+      parentRoute: typeof AuthenticatedWalletRoute
     }
-    '/_authenticated/apps/wallet/transactions': {
-      id: '/_authenticated/apps/wallet/transactions'
+    '/_authenticated/_wallet/dashboard': {
+      id: '/_authenticated/_wallet/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedWalletDashboardRouteImport
+      parentRoute: typeof AuthenticatedWalletRoute
+    }
+    '/_authenticated/_wallet/transactions': {
+      id: '/_authenticated/_wallet/transactions'
       path: '/transactions'
-      fullPath: '/apps/wallet/transactions'
-      preLoaderRoute: typeof AuthenticatedAppsWalletTransactionsRouteImport
-      parentRoute: typeof AuthenticatedAppsWalletRoute
+      fullPath: '/transactions'
+      preLoaderRoute: typeof AuthenticatedWalletTransactionsRouteImport
+      parentRoute: typeof AuthenticatedWalletRoute
+    }
+    '/_authenticated/_wallet/accounts/': {
+      id: '/_authenticated/_wallet/accounts/'
+      path: '/'
+      fullPath: '/accounts/'
+      preLoaderRoute: typeof AuthenticatedWalletAccountsIndexRouteImport
+      parentRoute: typeof AuthenticatedWalletAccountsRoute
+    }
+    '/_authenticated/_wallet/accounts/$accountId': {
+      id: '/_authenticated/_wallet/accounts/$accountId'
+      path: '/$accountId'
+      fullPath: '/accounts/$accountId'
+      preLoaderRoute: typeof AuthenticatedWalletAccountsAccountIdRouteImport
+      parentRoute: typeof AuthenticatedWalletAccountsRoute
     }
     '/api/auth/google/callback': {
       id: '/api/auth/google/callback'
@@ -549,20 +292,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthGoogleStartRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/apps/wallet/accounts/': {
-      id: '/_authenticated/apps/wallet/accounts/'
-      path: '/'
-      fullPath: '/apps/wallet/accounts/'
-      preLoaderRoute: typeof AuthenticatedAppsWalletAccountsIndexRouteImport
-      parentRoute: typeof AuthenticatedAppsWalletAccountsRoute
-    }
-    '/_authenticated/apps/wallet/accounts/$accountId': {
-      id: '/_authenticated/apps/wallet/accounts/$accountId'
-      path: '/$accountId'
-      fullPath: '/apps/wallet/accounts/$accountId'
-      preLoaderRoute: typeof AuthenticatedAppsWalletAccountsAccountIdRouteImport
-      parentRoute: typeof AuthenticatedAppsWalletAccountsRoute
-    }
   }
 }
 
@@ -577,105 +306,59 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
 const AuthenticatedAdminRouteWithChildren =
   AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
 
-interface AuthenticatedAppsWalletAccountsRouteChildren {
-  AuthenticatedAppsWalletAccountsAccountIdRoute: typeof AuthenticatedAppsWalletAccountsAccountIdRoute
-  AuthenticatedAppsWalletAccountsIndexRoute: typeof AuthenticatedAppsWalletAccountsIndexRoute
+interface AuthenticatedWalletAccountsRouteChildren {
+  AuthenticatedWalletAccountsAccountIdRoute: typeof AuthenticatedWalletAccountsAccountIdRoute
+  AuthenticatedWalletAccountsIndexRoute: typeof AuthenticatedWalletAccountsIndexRoute
 }
 
-const AuthenticatedAppsWalletAccountsRouteChildren: AuthenticatedAppsWalletAccountsRouteChildren =
+const AuthenticatedWalletAccountsRouteChildren: AuthenticatedWalletAccountsRouteChildren =
   {
-    AuthenticatedAppsWalletAccountsAccountIdRoute:
-      AuthenticatedAppsWalletAccountsAccountIdRoute,
-    AuthenticatedAppsWalletAccountsIndexRoute:
-      AuthenticatedAppsWalletAccountsIndexRoute,
+    AuthenticatedWalletAccountsAccountIdRoute:
+      AuthenticatedWalletAccountsAccountIdRoute,
+    AuthenticatedWalletAccountsIndexRoute:
+      AuthenticatedWalletAccountsIndexRoute,
   }
 
-const AuthenticatedAppsWalletAccountsRouteWithChildren =
-  AuthenticatedAppsWalletAccountsRoute._addFileChildren(
-    AuthenticatedAppsWalletAccountsRouteChildren,
+const AuthenticatedWalletAccountsRouteWithChildren =
+  AuthenticatedWalletAccountsRoute._addFileChildren(
+    AuthenticatedWalletAccountsRouteChildren,
   )
 
-interface AuthenticatedAppsWalletRouteChildren {
-  AuthenticatedAppsWalletAccountsRoute: typeof AuthenticatedAppsWalletAccountsRouteWithChildren
-  AuthenticatedAppsWalletTransactionsRoute: typeof AuthenticatedAppsWalletTransactionsRoute
-  AuthenticatedAppsWalletIndexRoute: typeof AuthenticatedAppsWalletIndexRoute
+interface AuthenticatedWalletRouteChildren {
+  AuthenticatedWalletAccountsRoute: typeof AuthenticatedWalletAccountsRouteWithChildren
+  AuthenticatedWalletDashboardRoute: typeof AuthenticatedWalletDashboardRoute
+  AuthenticatedWalletTransactionsRoute: typeof AuthenticatedWalletTransactionsRoute
 }
 
-const AuthenticatedAppsWalletRouteChildren: AuthenticatedAppsWalletRouteChildren =
-  {
-    AuthenticatedAppsWalletAccountsRoute:
-      AuthenticatedAppsWalletAccountsRouteWithChildren,
-    AuthenticatedAppsWalletTransactionsRoute:
-      AuthenticatedAppsWalletTransactionsRoute,
-    AuthenticatedAppsWalletIndexRoute: AuthenticatedAppsWalletIndexRoute,
-  }
+const AuthenticatedWalletRouteChildren: AuthenticatedWalletRouteChildren = {
+  AuthenticatedWalletAccountsRoute:
+    AuthenticatedWalletAccountsRouteWithChildren,
+  AuthenticatedWalletDashboardRoute: AuthenticatedWalletDashboardRoute,
+  AuthenticatedWalletTransactionsRoute: AuthenticatedWalletTransactionsRoute,
+}
 
-const AuthenticatedAppsWalletRouteWithChildren =
-  AuthenticatedAppsWalletRoute._addFileChildren(
-    AuthenticatedAppsWalletRouteChildren,
-  )
+const AuthenticatedWalletRouteWithChildren =
+  AuthenticatedWalletRoute._addFileChildren(AuthenticatedWalletRouteChildren)
 
 interface AuthenticatedRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
-  AuthenticatedAppsWalletRoute: typeof AuthenticatedAppsWalletRouteWithChildren
+  AuthenticatedWalletRoute: typeof AuthenticatedWalletRouteWithChildren
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
-  AuthenticatedAppsWalletRoute: AuthenticatedAppsWalletRouteWithChildren,
+  AuthenticatedWalletRoute: AuthenticatedWalletRouteWithChildren,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
-interface PortfolioRouteChildren {
-  PortfolioBlogRoute: typeof PortfolioBlogRoute
-  PortfolioContactRoute: typeof PortfolioContactRoute
-  PortfolioExperienceRoute: typeof PortfolioExperienceRoute
-  PortfolioProjectsRoute: typeof PortfolioProjectsRoute
-  PortfolioIndexRoute: typeof PortfolioIndexRoute
-}
-
-const PortfolioRouteChildren: PortfolioRouteChildren = {
-  PortfolioBlogRoute: PortfolioBlogRoute,
-  PortfolioContactRoute: PortfolioContactRoute,
-  PortfolioExperienceRoute: PortfolioExperienceRoute,
-  PortfolioProjectsRoute: PortfolioProjectsRoute,
-  PortfolioIndexRoute: PortfolioIndexRoute,
-}
-
-const PortfolioRouteWithChildren = PortfolioRoute._addFileChildren(
-  PortfolioRouteChildren,
-)
-
-interface ToolsRouteChildren {
-  ToolsFacebookVideoDownloaderRoute: typeof ToolsFacebookVideoDownloaderRoute
-  ToolsImageResizerRoute: typeof ToolsImageResizerRoute
-  ToolsMarkdownPdfBuilderRoute: typeof ToolsMarkdownPdfBuilderRoute
-  ToolsYoutubeVideoDownloaderRoute: typeof ToolsYoutubeVideoDownloaderRoute
-  ToolsIndexRoute: typeof ToolsIndexRoute
-}
-
-const ToolsRouteChildren: ToolsRouteChildren = {
-  ToolsFacebookVideoDownloaderRoute: ToolsFacebookVideoDownloaderRoute,
-  ToolsImageResizerRoute: ToolsImageResizerRoute,
-  ToolsMarkdownPdfBuilderRoute: ToolsMarkdownPdfBuilderRoute,
-  ToolsYoutubeVideoDownloaderRoute: ToolsYoutubeVideoDownloaderRoute,
-  ToolsIndexRoute: ToolsIndexRoute,
-}
-
-const ToolsRouteWithChildren = ToolsRoute._addFileChildren(ToolsRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
-  AboutRoute: AboutRoute,
   LoginRoute: LoginRoute,
-  PortfolioRoute: PortfolioRouteWithChildren,
-  ToolsRoute: ToolsRouteWithChildren,
   UnauthorizedRoute: UnauthorizedRoute,
-  ApiYoutubeDownloadRoute: ApiYoutubeDownloadRoute,
   ApiAuthGoogleCallbackRoute: ApiAuthGoogleCallbackRoute,
   ApiAuthGoogleStartRoute: ApiAuthGoogleStartRoute,
 }

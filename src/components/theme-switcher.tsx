@@ -8,18 +8,18 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
 import {
 	applyTheme,
 	isMode,
 	isPaletteId,
 	MODE_KEY,
 	MODES,
-	PALETTES,
-	THEME_KEY,
-	type PaletteId,
 	type Mode,
+	PALETTES,
+	type PaletteId,
+	THEME_KEY,
 } from "@/lib/themes";
+import { cn } from "@/lib/utils";
 
 function PaletteIcon(props: React.SVGProps<SVGSVGElement>) {
 	return (
@@ -133,14 +133,13 @@ export function ThemeSwitcher({ className }: { className?: string }) {
 		applyTheme(palette, next);
 	}
 
-	const currentPalette =
-		PALETTES.find((p) => p.id === palette) ?? PALETTES[0];
+	const currentPalette = PALETTES.find((p) => p.id === palette) ?? PALETTES[0];
 
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger
 				className={cn(
-					"inline-flex items-center gap-2 rounded-full border border-[var(--chip-line)] bg-[var(--chip-bg)] px-3.5 py-2 text-sm font-semibold text-[var(--sea-ink-soft)] outline-none transition hover:border-[var(--lagoon-deep)] hover:text-[var(--sea-ink)] focus-visible:ring-[3px] focus-visible:ring-[var(--lagoon-50)]",
+					"inline-flex items-center gap-2 rounded-xl border border-[var(--line)] bg-[var(--surface-strong)] px-3.5 py-2 text-sm font-semibold text-[var(--sea-ink-soft)] outline-none transition hover:border-[var(--lagoon-deep)] hover:text-[var(--sea-ink)] focus-visible:ring-[3px] focus-visible:ring-[var(--lagoon-50)]",
 					className,
 				)}
 			>
@@ -156,10 +155,7 @@ export function ThemeSwitcher({ className }: { className?: string }) {
 				{PALETTES.map((p) => {
 					const active = p.id === palette;
 					return (
-						<DropdownMenuItem
-							key={p.id}
-							onSelect={() => choosePalette(p.id)}
-						>
+						<DropdownMenuItem key={p.id} onSelect={() => choosePalette(p.id)}>
 							<span className="flex size-4 items-center justify-center">
 								<span
 									className={cn(

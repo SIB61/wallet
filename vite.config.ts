@@ -10,9 +10,6 @@ import { VitePWA } from "vite-plugin-pwa";
 
 const config = defineConfig({
 	resolve: { tsconfigPaths: true },
-	optimizeDeps: {
-		include: ["react-markdown", "remark-gfm"],
-	},
 	plugins: [
 		devtools(),
 		nitro({ preset: "vercel", rollupConfig: { external: [/^@sentry\//] } }),
@@ -24,9 +21,10 @@ const config = defineConfig({
 			outDir: ".vercel/output/static",
 			includeAssets: ["favicon.svg"],
 			manifest: {
-				name: "SIB61",
-				short_name: "SIB61",
-				description: "Portfolio, tools and apps",
+				name: "Ledgerly",
+				short_name: "Ledgerly",
+				description:
+					"Personal finance tracker for accounts, expenses and transfers",
 				theme_color: "#4fb8b2",
 				background_color: "#ffffff",
 				display: "standalone",
