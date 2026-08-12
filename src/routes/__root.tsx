@@ -53,8 +53,13 @@ export const Route = createRootRouteWithContext<{ auth: AuthState }>()({
 				href: `/manifest.webmanifest`,
 			},
 			{
-				rel: "apple-icon",
-				href: "/pwa/icon-192.png",
+				rel: "apple-touch-icon",
+				href: "/pwa/apple-touch-icon.png",
+			},
+			{
+				rel: "icon",
+				type: "image/svg+xml",
+				href: "/favicon.svg",
 			},
 		],
 	}),

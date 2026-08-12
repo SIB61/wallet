@@ -1,6 +1,8 @@
 import { Link, useRouterState } from "@tanstack/react-router";
+import { InstallPromptButton } from "@/components/install-prompt";
 import { LedgerlyLogo } from "@/components/logo";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { useInstallPrompt } from "@/lib/use-install-prompt";
 
 function ArrowRightIcon(props: React.SVGProps<SVGSVGElement>) {
 	return (
@@ -25,6 +27,7 @@ export function GlobalTopbar() {
 		select: (state) =>
 			Boolean(state.matches[0]?.context?.auth?.isAuthenticated),
 	});
+	const { canInstall, showPopup, install, dismissPopup } = useInstallPrompt();
 
 	return (
 		<header className="sticky top-0 z-40 border-b border-[var(--line)] bg-[var(--bg-base)]/90 backdrop-blur">
@@ -33,7 +36,15 @@ export function GlobalTopbar() {
 					<LedgerlyLogo />
 				</Link>
 				<div className="flex items-center gap-2.5">
-					<ThemeSwitcher />
+					{canInstall ? (
+						<InstallPromptButton
+							showPopup={showPopup}
+							install={install}
+							dismissPopup={dismissPopup}
+						/>
+					) : (
+						<ThemeSwitcher />
+					)}
 					{!signedIn && (
 						<Link
 							to="/login"

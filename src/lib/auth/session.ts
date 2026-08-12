@@ -9,7 +9,7 @@ import type { Role } from "@/generated/prisma/enums";
 import type { UserModel } from "@/generated/prisma/models";
 import { prisma } from "@/lib/prisma";
 
-export const SESSION_COOKIE = "sib61_session";
+export const SESSION_COOKIE = "ledgerly_session";
 
 const SESSION_DAYS = 30;
 const SESSION_COOKIE_OPTIONS = {
@@ -83,7 +83,7 @@ export async function revokeSession(): Promise<void> {
 }
 
 // Signing helpers for the short-lived OAuth state cookie (HMAC-SHA256).
-export const OAUTH_COOKIE = "sib61_oauth";
+export const OAUTH_COOKIE = "ledgerly_oauth";
 
 export function signOAuthState(payload: string): string {
 	const secret = process.env.SESSION_SECRET ?? "insecure-default-secret";
