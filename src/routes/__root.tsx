@@ -8,6 +8,7 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
 import { GlobalTopbar } from "@/components/topbar";
 import { type AuthState, getCurrentUserFn, toAuthState } from "@/lib/auth";
+import { AppLockScreen } from "@/components/app-lock";
 
 import appCss from "../styles.css?url";
 
@@ -88,7 +89,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 					}}
 				/>
 				<GlobalTopbar />
-				{children}
+				<AppLockScreen>{children}</AppLockScreen>
 				<TanStackDevtools
 					config={{
 						position: "bottom-right",

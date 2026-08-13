@@ -18,6 +18,7 @@ import { Route as AuthenticatedWalletRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedAdminAdminRouteImport } from './routes/_authenticated/_admin/admin'
 import { Route as AuthenticatedWalletAccountsRouteImport } from './routes/_authenticated/_wallet/accounts'
 import { Route as AuthenticatedWalletDashboardRouteImport } from './routes/_authenticated/_wallet/dashboard'
+import { Route as AuthenticatedWalletSettingsRouteImport } from './routes/_authenticated/_wallet/settings'
 import { Route as AuthenticatedWalletTransactionsRouteImport } from './routes/_authenticated/_wallet/transactions'
 import { Route as AuthenticatedWalletAccountsIndexRouteImport } from './routes/_authenticated/_wallet/accounts/index'
 import { Route as AuthenticatedWalletAccountsAccountIdRouteImport } from './routes/_authenticated/_wallet/accounts/$accountId'
@@ -68,6 +69,12 @@ const AuthenticatedWalletDashboardRoute =
     path: '/dashboard',
     getParentRoute: () => AuthenticatedWalletRoute,
   } as any)
+const AuthenticatedWalletSettingsRoute =
+  AuthenticatedWalletSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedWalletRoute,
+  } as any)
 const AuthenticatedWalletTransactionsRoute =
   AuthenticatedWalletTransactionsRouteImport.update({
     id: '/transactions',
@@ -104,6 +111,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminAdminRoute
   '/accounts': typeof AuthenticatedWalletAccountsRouteWithChildren
   '/dashboard': typeof AuthenticatedWalletDashboardRoute
+  '/settings': typeof AuthenticatedWalletSettingsRoute
   '/transactions': typeof AuthenticatedWalletTransactionsRoute
   '/accounts/$accountId': typeof AuthenticatedWalletAccountsAccountIdRoute
   '/api/auth/google/callback': typeof ApiAuthGoogleCallbackRoute
@@ -116,6 +124,7 @@ export interface FileRoutesByTo {
   '/unauthorized': typeof UnauthorizedRoute
   '/admin': typeof AuthenticatedAdminAdminRoute
   '/dashboard': typeof AuthenticatedWalletDashboardRoute
+  '/settings': typeof AuthenticatedWalletSettingsRoute
   '/transactions': typeof AuthenticatedWalletTransactionsRoute
   '/accounts/$accountId': typeof AuthenticatedWalletAccountsAccountIdRoute
   '/api/auth/google/callback': typeof ApiAuthGoogleCallbackRoute
@@ -133,6 +142,7 @@ export interface FileRoutesById {
   '/_authenticated/_admin/admin': typeof AuthenticatedAdminAdminRoute
   '/_authenticated/_wallet/accounts': typeof AuthenticatedWalletAccountsRouteWithChildren
   '/_authenticated/_wallet/dashboard': typeof AuthenticatedWalletDashboardRoute
+  '/_authenticated/_wallet/settings': typeof AuthenticatedWalletSettingsRoute
   '/_authenticated/_wallet/transactions': typeof AuthenticatedWalletTransactionsRoute
   '/_authenticated/_wallet/accounts/$accountId': typeof AuthenticatedWalletAccountsAccountIdRoute
   '/api/auth/google/callback': typeof ApiAuthGoogleCallbackRoute
@@ -148,6 +158,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/accounts'
     | '/dashboard'
+    | '/settings'
     | '/transactions'
     | '/accounts/$accountId'
     | '/api/auth/google/callback'
@@ -160,6 +171,7 @@ export interface FileRouteTypes {
     | '/unauthorized'
     | '/admin'
     | '/dashboard'
+    | '/settings'
     | '/transactions'
     | '/accounts/$accountId'
     | '/api/auth/google/callback'
@@ -176,6 +188,7 @@ export interface FileRouteTypes {
     | '/_authenticated/_admin/admin'
     | '/_authenticated/_wallet/accounts'
     | '/_authenticated/_wallet/dashboard'
+    | '/_authenticated/_wallet/settings'
     | '/_authenticated/_wallet/transactions'
     | '/_authenticated/_wallet/accounts/$accountId'
     | '/api/auth/google/callback'
@@ -257,6 +270,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedWalletDashboardRouteImport
       parentRoute: typeof AuthenticatedWalletRoute
     }
+    '/_authenticated/_wallet/settings': {
+      id: '/_authenticated/_wallet/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedWalletSettingsRouteImport
+      parentRoute: typeof AuthenticatedWalletRoute
+    }
     '/_authenticated/_wallet/transactions': {
       id: '/_authenticated/_wallet/transactions'
       path: '/transactions'
@@ -327,6 +347,7 @@ const AuthenticatedWalletAccountsRouteWithChildren =
 interface AuthenticatedWalletRouteChildren {
   AuthenticatedWalletAccountsRoute: typeof AuthenticatedWalletAccountsRouteWithChildren
   AuthenticatedWalletDashboardRoute: typeof AuthenticatedWalletDashboardRoute
+  AuthenticatedWalletSettingsRoute: typeof AuthenticatedWalletSettingsRoute
   AuthenticatedWalletTransactionsRoute: typeof AuthenticatedWalletTransactionsRoute
 }
 
@@ -334,6 +355,7 @@ const AuthenticatedWalletRouteChildren: AuthenticatedWalletRouteChildren = {
   AuthenticatedWalletAccountsRoute:
     AuthenticatedWalletAccountsRouteWithChildren,
   AuthenticatedWalletDashboardRoute: AuthenticatedWalletDashboardRoute,
+  AuthenticatedWalletSettingsRoute: AuthenticatedWalletSettingsRoute,
   AuthenticatedWalletTransactionsRoute: AuthenticatedWalletTransactionsRoute,
 }
 
