@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { AddAccountSheet } from "@/components/wallet/add-account-sheet";
+
 import { ScreenHeader } from "@/components/wallet/screen-header";
 import { AccountsSkeleton } from "@/components/wallet/skeletons";
 import { useAccounts } from "@/components/wallet/use-wallet-data";
@@ -61,7 +61,7 @@ function MoreVerticalIcon(props: React.SVGProps<SVGSVGElement>) {
 
 function AccountsPage() {
 	const { accounts, loaded, refresh } = useAccounts();
-	const [addOpen, setAddOpen] = useState(false);
+
 	const [filterType, setFilterType] = useState("");
 
 	const [editingId, setEditingId] = useState<string | null>(null);
@@ -178,21 +178,6 @@ function AccountsPage() {
 				</CardContent>
 			</Card>
 
-			<button
-				type="button"
-				onClick={() => setAddOpen(true)}
-				aria-label="Add account"
-				title="Add account"
-				className="fixed bottom-20 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--surface-strong)] text-[var(--lagoon-deep)] shadow-[0_2px_8px_var(--shadow-soft-08)] backdrop-blur transition hover:bg-[var(--lagoon-12)] active:scale-95 md:bottom-6 md:right-6"
-			>
-				<PlusIcon className="h-6 w-6" />
-			</button>
-
-			<AddAccountSheet
-				open={addOpen}
-				onClose={() => setAddOpen(false)}
-				onCreated={refresh}
-			/>
 		</div>
 	);
 }
@@ -608,19 +593,4 @@ function OtherIcon(props: React.SVGProps<SVGSVGElement>) {
 	);
 }
 
-function PlusIcon(props: React.SVGProps<SVGSVGElement>) {
-	return (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2"
-			strokeLinecap="round"
-			aria-hidden="true"
-			{...props}
-		>
-			<path d="M12 5v14" />
-			<path d="M5 12h14" />
-		</svg>
-	);
-}
+

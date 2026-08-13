@@ -35,6 +35,9 @@ export function useAccount(accountId: string) {
 
 	useEffect(() => {
 		void refresh();
+		const listener = () => void refresh();
+		window.addEventListener("wallet-data-changed", listener);
+		return () => window.removeEventListener("wallet-data-changed", listener);
 	}, [refresh]);
 
 	return { account: data, error, loaded, refresh };
@@ -63,6 +66,9 @@ export function useAccountTransactions(accountId: string) {
 
 	useEffect(() => {
 		void refresh();
+		const listener = () => void refresh();
+		window.addEventListener("wallet-data-changed", listener);
+		return () => window.removeEventListener("wallet-data-changed", listener);
 	}, [refresh]);
 
 	return { transactions: data, error, loaded, refresh };
@@ -87,6 +93,9 @@ export function useAccounts() {
 
 	useEffect(() => {
 		void refresh();
+		const listener = () => void refresh();
+		window.addEventListener("wallet-data-changed", listener);
+		return () => window.removeEventListener("wallet-data-changed", listener);
 	}, [refresh]);
 
 	return { accounts: data, error, loaded, refresh };
@@ -113,6 +122,9 @@ export function useTransactions() {
 
 	useEffect(() => {
 		void refresh();
+		const listener = () => void refresh();
+		window.addEventListener("wallet-data-changed", listener);
+		return () => window.removeEventListener("wallet-data-changed", listener);
 	}, [refresh]);
 
 	return { transactions: data, error, loaded, refresh };
@@ -151,6 +163,9 @@ export function useTransactionPage({
 	useEffect(() => {
 		setLoaded(false);
 		void refresh();
+		const listener = () => void refresh();
+		window.addEventListener("wallet-data-changed", listener);
+		return () => window.removeEventListener("wallet-data-changed", listener);
 	}, [refresh]);
 
 	return {
@@ -186,6 +201,9 @@ export function useCategories() {
 
 	useEffect(() => {
 		void refresh();
+		const listener = () => void refresh();
+		window.addEventListener("wallet-data-changed", listener);
+		return () => window.removeEventListener("wallet-data-changed", listener);
 	}, [refresh]);
 
 	const create = useCallback(

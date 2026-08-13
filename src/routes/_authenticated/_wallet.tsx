@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet, useLocation } from "@tanstack/react-router";
 import { AppNav } from "@/components/wallet/app-nav";
+import { GlobalActionMenu } from "@/components/wallet/global-action-menu";
 
 export const Route = createFileRoute("/_authenticated/_wallet")({
 	component: WalletLayout,
@@ -16,6 +17,8 @@ function WalletLayout() {
 			<div className="min-w-0 flex-1">
 				<Outlet />
 			</div>
+
+			<GlobalActionMenu />
 		</main>
 	);
 }

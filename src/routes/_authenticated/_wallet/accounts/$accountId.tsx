@@ -2,7 +2,7 @@ import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { AddTransactionSheet } from "@/components/wallet/add-transaction-sheet";
+
 import { ScreenHeader } from "@/components/wallet/screen-header";
 import { AccountDetailSkeleton } from "@/components/wallet/skeletons";
 import { TransactionRow } from "@/components/wallet/transaction-row";
@@ -39,7 +39,7 @@ function AccountDetails() {
 	const { accounts } = useAccounts();
 	const { categories } = useCategories();
 	const [deletingId, setDeletingId] = useState<string | null>(null);
-	const [addOpen, setAddOpen] = useState(false);
+
 
 	async function handleDelete(tx: TransactionDTO) {
 		if (
@@ -153,24 +153,6 @@ function AccountDetails() {
 				</CardContent>
 			</Card>
 
-			<button
-				type="button"
-				onClick={() => setAddOpen(true)}
-				aria-label="Add transaction"
-				title="Add transaction"
-				className="fixed bottom-20 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--surface-strong)] text-[var(--lagoon-deep)] shadow-[0_2px_8px_var(--shadow-soft-08)] backdrop-blur transition hover:bg-[var(--lagoon-12)] active:scale-95 md:bottom-6 md:right-6"
-			>
-				<PlusIcon className="h-6 w-6" />
-			</button>
-
-			<AddTransactionSheet
-				open={addOpen}
-				accounts={accounts}
-				categories={categories}
-				initialAccountId={account.id}
-				onClose={() => setAddOpen(false)}
-				onCreated={refresh}
-			/>
 		</div>
 	);
 }
@@ -196,19 +178,3 @@ function TrashIcon(props: React.SVGProps<SVGSVGElement>) {
 	);
 }
 
-function PlusIcon(props: React.SVGProps<SVGSVGElement>) {
-	return (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2"
-			strokeLinecap="round"
-			aria-hidden="true"
-			{...props}
-		>
-			<path d="M12 5v14" />
-			<path d="M5 12h14" />
-		</svg>
-	);
-}
