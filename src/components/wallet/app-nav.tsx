@@ -1,5 +1,5 @@
 import { Link, useRouter } from "@tanstack/react-router";
-import { type SVGProps, useEffect, useRef, useState } from "react";
+import { type SVGProps, useState } from "react";
 import { UserAvatar } from "@/components/auth/user-avatar";
 import { LogoMark } from "@/components/logo";
 import { type AuthState, logoutFn } from "@/lib/auth";
@@ -205,8 +205,6 @@ export function AppNav({
 			typeof window !== "undefined" &&
 			window.localStorage.getItem("wallet-sidebar") === "collapsed",
 	);
-	const [menuOpen, setMenuOpen] = useState(false);
-	const menuRef = useRef<HTMLDivElement>(null);
 	const [loggingOut, setLoggingOut] = useState(false);
 
 	async function handleLogout() {
@@ -219,24 +217,6 @@ export function AppNav({
 			setLoggingOut(false);
 		}
 	}
-
-	useEffect(() => {
-		if (!menuOpen) return;
-		function onPointerDown(event: PointerEvent) {
-			if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-				setMenuOpen(false);
-			}
-		}
-		function onKeyDown(event: KeyboardEvent) {
-			if (event.key === "Escape") setMenuOpen(false);
-		}
-		document.addEventListener("pointerdown", onPointerDown);
-		document.addEventListener("keydown", onKeyDown);
-		return () => {
-			document.removeEventListener("pointerdown", onPointerDown);
-			document.removeEventListener("keydown", onKeyDown);
-		};
-	}, [menuOpen]);
 
 	function toggle() {
 		setCollapsed((prev) => {
@@ -399,7 +379,7 @@ export function AppNav({
 								<span className="flex h-6 w-6 items-center justify-center">
 									<Icon className="h-5 w-5" />
 								</span>
-								<span className="truncate">{label}</span>
+								<span className="hidden min-[360px]:block truncate">{label}</span>
 							</Link>
 						);
 					})}
@@ -417,75 +397,9 @@ export function AppNav({
 							<span className="flex h-6 w-6 items-center justify-center">
 								<ShieldIcon className="h-5 w-5" />
 							</span>
-							<span className="truncate">Admin</span>
+							<span className="hidden min-[360px]:block truncate">Admin</span>
 						</Link>
 					)}
-					<div className="relative flex-1">
-						<button
-							type="button"
-							onClick={() => setMenuOpen((open) => !open)}
-							aria-haspopup="menu"
-							aria-expanded={menuOpen}
-							className={cn(
-								"flex w-full min-w-0 flex-col items-center gap-1 py-2.5 text-[10px] font-semibold transition",
-								menuOpen
-									? "text-[var(--lagoon-deep)]"
-									: "text-[var(--sea-ink-soft)]",
-							)}
-						>
-							<UserAvatar
-								src={auth.user?.avatarUrl}
-								name={auth.user?.name}
-								className="h-5 w-5 rounded-md"
-							/>
-							<span className="truncate">More</span>
-						</button>
-
-						{menuOpen && (
-							<div
-								ref={menuRef}
-								role="menu"
-								className="absolute inset-x-2 bottom-full z-50 mb-3 overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--menu-solid)] p-1.5"
-							>
-								{auth.user && (
-									<div className="flex items-center gap-2.5 rounded-lg px-2.5 py-2">
-										<UserAvatar
-											src={auth.user.avatarUrl}
-											name={auth.user.name}
-											className="h-9 w-9"
-										/>
-										<span className="min-w-0 flex-1">
-											<span className="block truncate text-sm font-semibold text-[var(--sea-ink)]">
-												{auth.user.name ?? "Signed in"}
-											</span>
-											<span className="block truncate text-xs text-[var(--sea-ink-soft)]">
-												{auth.user.email}
-											</span>
-										</span>
-									</div>
-								)}
-								<div className="my-1 h-px bg-[var(--line)]" />
-								<Link
-									to="/"
-									onClick={() => setMenuOpen(false)}
-									className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm font-semibold text-[var(--sea-ink-soft)] no-underline transition hover:bg-[var(--lagoon-12)] hover:text-[var(--sea-ink)]"
-								>
-									<HomeIcon className="h-4 w-4" />
-									Home
-								</Link>
-								<button
-									type="button"
-									role="menuitem"
-									onClick={() => void handleLogout()}
-									disabled={loggingOut}
-									className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm font-semibold text-[#c0392b] transition hover:bg-[var(--lagoon-12)] disabled:pointer-events-none disabled:opacity-50"
-								>
-									<LogoutIcon className="h-4 w-4" />
-									{loggingOut ? "Signing out…" : "Sign out"}
-								</button>
-							</div>
-						)}
-					</div>
 				</div>
 			</nav>
 		</>
