@@ -28,7 +28,7 @@ const config = defineConfig({
 				theme_color: "#4fb8b2",
 				background_color: "#ffffff",
 				display: "standalone",
-				start_url: "/",
+				start_url: "/dashboard",
 				scope: "/",
 				icons: [
 					{
