@@ -5,6 +5,7 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { GlobalTopbar } from "@/components/topbar";
 import { type AuthState, getCurrentUserFn, toAuthState } from "@/lib/auth";
@@ -14,7 +15,7 @@ import appCss from "../styles.css?url";
 
 const THEME_INIT_SCRIPT = `(function(){try{var THEMES=['island','sunset','forest','midnight','rose'];var stored=window.localStorage.getItem('theme-palette');var palette=THEMES.indexOf(stored)>-1?stored:'island';var modeStored=window.localStorage.getItem('theme');var mode=(modeStored==='light'||modeStored==='dark'||modeStored==='auto')?modeStored:'auto';var prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;var resolved=mode==='auto'?(prefersDark?'dark':'light'):mode;var root=document.documentElement;root.classList.remove('light','dark');root.classList.add(resolved);if(palette==='island'){root.removeAttribute('data-palette')}else{root.setAttribute('data-palette',palette)}if(mode==='auto'){root.removeAttribute('data-theme')}else{root.setAttribute('data-theme',mode)}root.style.colorScheme=resolved;}catch(e){}})();`;
 
-export const Route = createRootRouteWithContext<{ auth: AuthState }>()({
+export const Route = createRootRouteWithContext<{ auth: AuthState; queryClient: QueryClient }>()({
 	head: () => ({
 		meta: [
 			{
@@ -72,6 +73,7 @@ export const Route = createRootRouteWithContext<{ auth: AuthState }>()({
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+	const { queryClient } = Route.useRouteContext();
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<head>
@@ -89,7 +91,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 					}}
 				/>
 				<GlobalTopbar />
-				<AppLockScreen>{children}</AppLockScreen>
+				<QueryClientProvider client={queryClient}>
+					<AppLockScreen>{children}</AppLockScreen>
+				</QueryClientProvider>
 				<TanStackDevtools
 					config={{
 						position: "bottom-right",

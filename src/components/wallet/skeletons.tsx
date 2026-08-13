@@ -164,3 +164,17 @@ export function AdminSkeleton() {
 		</div>
 	);
 }
+
+export function GlobalPending() {
+	return (
+		<div className="flex h-[50vh] w-full flex-col items-center justify-center gap-5" aria-hidden="true">
+			<div className="relative flex items-center justify-center">
+				<div className="absolute h-14 w-14 animate-ping rounded-full bg-[var(--lagoon-deep)] opacity-20" />
+				<div className="h-10 w-10 animate-spin rounded-full border-[3px] border-[var(--line)] border-t-[var(--lagoon-deep)]" />
+			</div>
+			<p className="text-sm font-semibold tracking-tight text-[var(--sea-ink-soft)] animate-pulse">
+				Loading...
+			</p>
+		</div>
+	);
+}

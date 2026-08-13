@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { TransactionType } from "@/generated/prisma/enums";
 import {
 	type AccountDTO,
@@ -17,117 +18,83 @@ import {
 } from "@/lib/wallet";
 
 export function useAccount(accountId: string) {
-	const [data, setData] = useState<AccountDTO | null>(null);
-	const [error, setError] = useState<string | null>(null);
-	const [loaded, setLoaded] = useState(false);
-
-	const refresh = useCallback(async () => {
-		try {
-			const account = await getAccountFn({ data: { id: accountId } });
-			setData(account);
-			setError(null);
-		} catch (err) {
-			setError(err instanceof Error ? err.message : "Failed to load account.");
-		} finally {
-			setLoaded(true);
-		}
-	}, [accountId]);
+	const { data, error, isSuccess, refetch } = useQuery({
+		queryKey: ["account", accountId],
+		queryFn: () => getAccountFn({ data: { id: accountId } }),
+	});
 
 	useEffect(() => {
-		void refresh();
-		const listener = () => void refresh();
+		const listener = () => { void refetch(); };
 		window.addEventListener("wallet-data-changed", listener);
 		return () => window.removeEventListener("wallet-data-changed", listener);
-	}, [refresh]);
+	}, [refetch]);
 
-	return { account: data, error, loaded, refresh };
+	return { 
+		account: data ?? null, 
+		error: error ? (error as Error).message : null, 
+		loaded: isSuccess, 
+		refresh: refetch 
+	};
 }
 
 export function useAccountTransactions(accountId: string) {
-	const [data, setData] = useState<TransactionDTO[]>([]);
-	const [error, setError] = useState<string | null>(null);
-	const [loaded, setLoaded] = useState(false);
-
-	const refresh = useCallback(async () => {
-		try {
-			const transactions = await listAccountTransactionsFn({
-				data: { accountId },
-			});
-			setData(transactions);
-			setError(null);
-		} catch (err) {
-			setError(
-				err instanceof Error ? err.message : "Failed to load transactions.",
-			);
-		} finally {
-			setLoaded(true);
-		}
-	}, [accountId]);
+	const { data, error, isSuccess, refetch } = useQuery({
+		queryKey: ["accountTransactions", accountId],
+		queryFn: () => listAccountTransactionsFn({ data: { accountId } }),
+	});
 
 	useEffect(() => {
-		void refresh();
-		const listener = () => void refresh();
+		const listener = () => { void refetch(); };
 		window.addEventListener("wallet-data-changed", listener);
 		return () => window.removeEventListener("wallet-data-changed", listener);
-	}, [refresh]);
+	}, [refetch]);
 
-	return { transactions: data, error, loaded, refresh };
+	return { 
+		transactions: data ?? [], 
+		error: error ? (error as Error).message : null, 
+		loaded: isSuccess, 
+		refresh: refetch 
+	};
 }
 
 export function useAccounts() {
-	const [data, setData] = useState<AccountDTO[]>([]);
-	const [error, setError] = useState<string | null>(null);
-	const [loaded, setLoaded] = useState(false);
-
-	const refresh = useCallback(async () => {
-		try {
-			const accounts = await listAccountsFn();
-			setData(accounts);
-			setError(null);
-		} catch (err) {
-			setError(err instanceof Error ? err.message : "Failed to load accounts.");
-		} finally {
-			setLoaded(true);
-		}
-	}, []);
+	const { data, error, isSuccess, refetch } = useQuery({
+		queryKey: ["accounts"],
+		queryFn: () => listAccountsFn(),
+	});
 
 	useEffect(() => {
-		void refresh();
-		const listener = () => void refresh();
+		const listener = () => { void refetch(); };
 		window.addEventListener("wallet-data-changed", listener);
 		return () => window.removeEventListener("wallet-data-changed", listener);
-	}, [refresh]);
+	}, [refetch]);
 
-	return { accounts: data, error, loaded, refresh };
+	return { 
+		accounts: data ?? [], 
+		error: error ? (error as Error).message : null, 
+		loaded: isSuccess, 
+		refresh: refetch 
+	};
 }
 
 export function useTransactions() {
-	const [data, setData] = useState<TransactionDTO[]>([]);
-	const [error, setError] = useState<string | null>(null);
-	const [loaded, setLoaded] = useState(false);
-
-	const refresh = useCallback(async () => {
-		try {
-			const transactions = await listTransactionsFn();
-			setData(transactions);
-			setError(null);
-		} catch (err) {
-			setError(
-				err instanceof Error ? err.message : "Failed to load transactions.",
-			);
-		} finally {
-			setLoaded(true);
-		}
-	}, []);
+	const { data, error, isSuccess, refetch } = useQuery({
+		queryKey: ["transactions"],
+		queryFn: () => listTransactionsFn(),
+	});
 
 	useEffect(() => {
-		void refresh();
-		const listener = () => void refresh();
+		const listener = () => { void refetch(); };
 		window.addEventListener("wallet-data-changed", listener);
 		return () => window.removeEventListener("wallet-data-changed", listener);
-	}, [refresh]);
+	}, [refetch]);
 
-	return { transactions: data, error, loaded, refresh };
+	return { 
+		transactions: data ?? [], 
+		error: error ? (error as Error).message : null, 
+		loaded: isSuccess, 
+		refresh: refetch 
+	};
 }
 
 export function useTransactionPage({
@@ -139,101 +106,78 @@ export function useTransactionPage({
 	type?: TransactionType;
 	pageSize?: number;
 }) {
-	const [data, setData] = useState<TransactionPage | null>(null);
 	const [page, setPage] = useState(1);
-	const [error, setError] = useState<string | null>(null);
-	const [loaded, setLoaded] = useState(false);
-
-	const refresh = useCallback(async () => {
-		try {
-			const result = await listTransactionsPageFn({
-				data: { page, pageSize, accountId, type },
-			});
-			setData(result);
-			setError(null);
-		} catch (err) {
-			setError(
-				err instanceof Error ? err.message : "Failed to load transactions.",
-			);
-		} finally {
-			setLoaded(true);
-		}
-	}, [page, pageSize, accountId, type]);
+	
+	const { data, error, isSuccess, refetch } = useQuery({
+		queryKey: ["transactionsPage", page, pageSize, accountId, type],
+		queryFn: () => listTransactionsPageFn({ data: { page, pageSize, accountId, type } }),
+	});
 
 	useEffect(() => {
-		setLoaded(false);
-		void refresh();
-		const listener = () => void refresh();
+		const listener = () => { void refetch(); };
 		window.addEventListener("wallet-data-changed", listener);
 		return () => window.removeEventListener("wallet-data-changed", listener);
-	}, [refresh]);
+	}, [refetch]);
 
 	return {
 		transactions: data?.items ?? [],
 		total: data?.total ?? 0,
 		page,
 		totalPages: data?.totalPages ?? 1,
-		error,
-		loaded,
+		error: error ? (error as Error).message : null,
+		loaded: isSuccess,
 		setPage,
-		refresh,
+		refresh: refetch,
 	};
 }
 
 export function useCategories() {
-	const [data, setData] = useState<CategoryDTO[]>([]);
-	const [error, setError] = useState<string | null>(null);
-	const [loaded, setLoaded] = useState(false);
-
-	const refresh = useCallback(async () => {
-		try {
-			const categories = await listCategoriesFn();
-			setData(categories);
-			setError(null);
-		} catch (err) {
-			setError(
-				err instanceof Error ? err.message : "Failed to load categories.",
-			);
-		} finally {
-			setLoaded(true);
-		}
-	}, []);
+	const queryClient = useQueryClient();
+	const { data, error, isSuccess, refetch } = useQuery({
+		queryKey: ["categories"],
+		queryFn: () => listCategoriesFn(),
+	});
 
 	useEffect(() => {
-		void refresh();
-		const listener = () => void refresh();
+		const listener = () => { void refetch(); };
 		window.addEventListener("wallet-data-changed", listener);
 		return () => window.removeEventListener("wallet-data-changed", listener);
-	}, [refresh]);
+	}, [refetch]);
 
-	const create = useCallback(
-		async (input: { name: string; type: TransactionType }) => {
-			const category = await createCategoryFn({ data: input });
-			setData((prev) => [...prev, category]);
-			return category;
-		},
-		[],
-	);
+	const createMut = useMutation({
+		mutationFn: (input: { name: string; type: TransactionType }) => createCategoryFn({ data: input }),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: ["categories"] })
+	});
+
+	const updateMut = useMutation({
+		mutationFn: (input: { id: string; name: string }) => updateCategoryFn({ data: input }),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: ["categories"] })
+	});
+
+	const removeMut = useMutation({
+		mutationFn: (id: string) => deleteCategoryFn({ data: { id } }),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: ["categories"] })
+	});
+
+	const create = useCallback(async (input: { name: string; type: TransactionType }) => {
+		return createMut.mutateAsync(input);
+	}, [createMut]);
 
 	const update = useCallback(async (input: { id: string; name: string }) => {
-		const category = await updateCategoryFn({ data: input });
-		setData((prev) => prev.map((c) => (c.id === category.id ? category : c)));
-		return category;
-	}, []);
+		return updateMut.mutateAsync(input);
+	}, [updateMut]);
 
 	const remove = useCallback(async (id: string) => {
-		await deleteCategoryFn({ data: { id } });
-		setData((prev) => prev.filter((c) => c.id !== id));
-	}, []);
+		await removeMut.mutateAsync(id);
+	}, [removeMut]);
 
-	const categoriesByType = (type: TransactionType) =>
-		data.filter((c) => c.type === type);
+	const categoriesByType = (type: TransactionType) => (data ?? []).filter((c) => c.type === type);
 
 	return {
-		categories: data,
-		error,
-		loaded,
-		refresh,
+		categories: data ?? [],
+		error: error ? (error as Error).message : null,
+		loaded: isSuccess,
+		refresh: refetch,
 		create,
 		update,
 		remove,
